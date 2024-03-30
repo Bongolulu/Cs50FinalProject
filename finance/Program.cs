@@ -2,6 +2,7 @@ using System.Configuration;
 using Classes;
 using finance.Helper;
 using finance.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 // Erstelle einen builder (erstellt Webapplikationen). Mit diesem Objekt erstellt man Webapplikationen
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // DB. Baustein DB wird dem builder hinzugefügt.
 builder.Services.AddDbContext<FinanceContext>(opt => 
     opt.UseNpgsql("Server=192.168.2.2;Port=5432;Database=finance;Username=myUser;Password=Password12!"));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
 
 // Danach rufe ich Methode .Build auf um mit den Bausteinen die Webapplikation zusammenzustellen.
 var app = builder.Build();
@@ -71,6 +75,9 @@ app.MapPost("/login", async (Todo todo, FinanceContext db) =>
     await db.SaveChangesAsync();
 
     return Results.Created($"/login/{todo.Id}", todo);
+    
+    string token = await jwtProvider.GenerateAsync(benutzer);
+    
 });
 
 // Route quote get
