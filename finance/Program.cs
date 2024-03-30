@@ -2,8 +2,10 @@ using System.Configuration;
 using finance.datenbank;
 using finance.Helper;
 using finance.Models;
+using Infrastructure.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 
 // Erstelle einen builder (erstellt Webapplikationen). Mit diesem Objekt erstellt man Webapplikationen
@@ -11,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Web- API (ein oder mehrere Controller). Objekt builder benutze ich, um Bausteine hinzuzufügen,welche ich für mein Programm
 //builder.Services.AddControllers();      // benötige. Hier Baustein Controller.
+
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 // DB. Baustein DB wird dem builder hinzugefügt.
 builder.Services.AddDbContext<FinanceContext>(opt => 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 
-public sealed class JwtProvider()
+public sealed class JwtProvider(IOptions<JwtOptions> options)
     : IJwtProvider
 {
     public async Task<string> GenerateAsync(Benutzer user)
@@ -19,23 +19,17 @@ public sealed class JwtProvider()
             new(ClaimTypes.NameIdentifier, user.Name.ToString()),
             
         };
-
-        var options = new JwtOptions()
-        {
-            SecretKey = "TotalGeheimerKeyDenKeinerErratenKann",
-            Audience = "Finance",
-            Issuer = "bongolulu"
-        };
+        
         
 
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(options.SecretKey)),
+                Encoding.UTF8.GetBytes(options.Value.SecretKey)),
             SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            options.Issuer,
-            options.Audience,
+            options.Value.Issuer,
+            options.Value.Audience,
             claims,
             null,
             DateTime.UtcNow.AddDays(1),
