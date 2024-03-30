@@ -5,12 +5,16 @@ namespace finance.Helper;
 public class AktienKursAbfrager
 {
 
-    private static string apiKey = "WN9Z6ET3O0QDTISM";
+    private static string apiKey = "3nqsfES99bh9PF02I4GjPn1DoHXz73Js";
+    private static string baseurl = "https://financialmodelingprep.com/api/v3/search";
+    private static string pquery = "query";
+    private static string pkey = "apikey";
+    
 
 
     public async Task<string> GetStocks(string search)
     {
-        string url = $"https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords={search}&apikey={apiKey}";
+        string url = $"{baseurl}?{pquery}={search}&{pkey}={apiKey}";
         string jsonResponse = await MakeRequest(url);
 
         // You can process the jsonResponse here as needed
