@@ -1,5 +1,6 @@
 using System.Configuration;
 using Classes;
+using finance.Helper;
 using finance.Models;
 using Microsoft.EntityFrameworkCore;
 // Erstelle einen builder (erstellt Webapplikationen). Mit diesem Objekt erstellt man Webapplikationen
@@ -41,8 +42,9 @@ app.MapPost("/register", async (RegisterRequest registerRequest, FinanceContext 
     await db.SaveChangesAsync();
 
     return Results.Created($"/register/{neuerBenutzer.BenutzerId}", neuerBenutzer);
-    
-});
+}).Validate<RegisterRequest>(); 
+
+ 
 
 /*
 // Route buy post

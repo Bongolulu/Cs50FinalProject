@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using finance.Helper;
 
 namespace Classes;
 
@@ -12,6 +13,7 @@ public class RegisterRequest
     [Required(ErrorMessage = "Passwort ist erforderlich")]
     public string Passwort { get; set; }
 
-    [Required(ErrorMessage = "Bestätigung ist erforderlich")]
+    [Required(ErrorMessage = "Conrifmration ist erforderlich")]
+    [MatchProperty("Passwort", ErrorMessage = "Die Passwoerter stimmen nicht überein")]
     public string Confirmation { get; set; }
 }
