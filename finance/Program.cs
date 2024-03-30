@@ -65,6 +65,19 @@ app.MapPost("/login", async (LoginRequest loginRequest, FinanceContext db, IJwtP
     
 }).Validate<LoginRequest>();
 
+
+// Route quote post
+app.MapPost("/quote", async (QuoteRequest quoteRequest, FinanceContext db) =>
+{
+    // Aktuellen Aktienkurs abfragen:
+    AktienKursAbfrager abfrager = new AktienKursAbfrager();
+    decimal aktienkurs = await abfrager.GetStockQuote(quoteRequest.Symbol);
+
+    return Results.Ok(aktienkurs);
+}).RequireAuthorization();
+
+
+
 /*
 // Route buy post
 app.MapPost("/buy", async (Todo todo, FinanceContext db) =>
@@ -83,19 +96,6 @@ app.MapGet("/history", async (FinanceContext db) =>
 app.MapGet("/index", async (FinanceContext db) =>
     "kommt noch");
 
-
-// Route quote get
-app.MapGet("/quote", async (FinanceContext db) =>
-    "kommt noch");
-
-// Route quote post
-app.MapPost("/quote", async (Todo todo, FinanceContext db) =>
-{
-    db.Todos.Add(todo);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/quote/{todo.Id}", todo);
-});
 
 
 
