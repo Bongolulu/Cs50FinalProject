@@ -5,7 +5,7 @@ using finance.Helper;
 
 namespace Classes;
 
-public class RegisterRequest
+public class LoginRequest
 {
     [Required(ErrorMessage = "Benutzername ist erforderlich")]
     public string Benutzername { get; set; }
@@ -13,7 +13,4 @@ public class RegisterRequest
     [Required(ErrorMessage = "Passwort ist erforderlich")]
     public string Passwort { get; set; }
 
-    [Required(ErrorMessage = "Confirmation ist erforderlich")]
-    [MatchProperty("Passwort", ErrorMessage = "Die Passwoerter stimmen nicht überein")]
-    public string Confirmation { get; set; }
 }

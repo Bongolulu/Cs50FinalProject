@@ -4,6 +4,8 @@ using finance.Helper;
 using finance.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+
 // Erstelle einen builder (erstellt Webapplikationen). Mit diesem Objekt erstellt man Webapplikationen
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FinanceContext>(opt => 
     opt.UseNpgsql("Server=192.168.2.2;Port=5432;Database=finance;Username=myUser;Password=Password12!"));
 
+//Authentifizierung mit Token (bedeutet nur 1x einloggen und mit jeder weiteren Abfrage wird der Token geschickt.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+
 // Danach rufe ich Methode .Build auf um mit den Bausteinen die Webapplikation zusammenzustellen.
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 
 // Route register post
@@ -29,26 +37,30 @@ app.MapPost("/register", async (RegisterRequest registerRequest, FinanceContext 
     if (db.Benutzer.Count(benutzer => benutzer.Name == registerRequest.Benutzername) >0)
         return Results.BadRequest("Der Benutzername existiert bereits.");
     
-    // Checken, ob Passwort eingegeben, falls nein, Fehlermeldung
-    if (db.Benutzer.Entry(benutzer.PasswortHash == registerRequest.Passwort))
-        return Results.BadRequest("Bitte Passwort eingeben.");
-    
-    // Checken, ob zweite Passworteingabe korrekt, falls nein, Fehlermeldung
-    
-    
-    
-    
     // Neuen Benutzer in DB anlegen:
     Benutzer neuerBenutzer = new Benutzer(registerRequest.Benutzername, registerRequest.Passwort);
     db.Benutzer.Add(neuerBenutzer);
     
     //in db speichern:
     await db.SaveChangesAsync();
-
-    return Results.Created($"/register/{neuerBenutzer.BenutzerId}", neuerBenutzer);
+    
+    // Antwort:
+    return Results.Created();
 }).Validate<RegisterRequest>(); 
 
- 
+// Route login post
+app.MapPost("/login", async (LoginRequest loginRequest, FinanceContext db, IJwtProvider jwtProvider) =>
+{
+    var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == loginRequest.Benutzername);
+
+    // checken, ob Benutzername in db vorhanden und wenn ja, ob Passwort stimmt
+    if (benutzer is null || !benutzer.PasswortPrüfen(loginRequest.Passwort))
+        return Results.Unauthorized();
+    
+    
+    string token = await jwtProvider.GenerateAsync(benutzer);
+    return Results.Ok(token);
+}).Validate<LoginRequest>();
 
 /*
 // Route buy post
@@ -68,17 +80,6 @@ app.MapGet("/history", async (FinanceContext db) =>
 app.MapGet("/index", async (FinanceContext db) =>
     "kommt noch");
 
-// Route login post
-app.MapPost("/login", async (Todo todo, FinanceContext db) =>
-{
-    db.Todos.Add(todo);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/login/{todo.Id}", todo);
-    
-    string token = await jwtProvider.GenerateAsync(benutzer);
-    
-});
 
 // Route quote get
 app.MapGet("/quote", async (FinanceContext db) =>
