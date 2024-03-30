@@ -22,21 +22,21 @@ public class AktienKursAbfrager
         return jsonResponse; // Modify the return value based on your requirements
     }
 
-    public async Task<decimal> GetStockQuote(string symbol)
+    public decimal GetStockQuote(string symbol)
     {
         return 10.23m;
         string url = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={apiKey}";
-        string jsonResponse = await MakeRequest(url);
+       // string jsonResponse =  MakeRequest(url);
 
         // Using System.Text.Json for JSON parsing (available in .NET Core 3.0+)
-        var jsonDoc = JsonDocument.Parse(jsonResponse);
+        //var jsonDoc = JsonDocument.Parse(jsonResponse);
 
         try
         {
-            string quote = jsonDoc.RootElement.GetProperty("Global Quote").GetProperty("05. price").GetString();
-            decimal stockQuote = decimal.Parse(quote);
-
-            return stockQuote;
+          //  string quote = jsonDoc.RootElement.GetProperty("Global Quote").GetProperty("05. price").GetString();
+            //decimal stockQuote = decimal.Parse(quote);
+            return 0;
+            //return stockQuote;
         }
         catch
         {
