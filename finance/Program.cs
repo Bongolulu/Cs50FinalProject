@@ -77,7 +77,7 @@ app.MapPost("/quote", async (QuoteRequest quoteRequest, FinanceContext db) =>
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = abfrager.GetStockQuote(quoteRequest.Symbol);
+    decimal aktienkurs = await abfrager.GetStockQuote(quoteRequest.Symbol);
     if (aktienkurs == 0)
         return Results.NotFound();
     return Results.Ok(aktienkurs);
@@ -88,7 +88,7 @@ app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpCon
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = abfrager.GetStockQuote(tradeRequest.Symbol);
+    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
     if (aktienkurs == 0)
         return Results.NotFound();
     
@@ -124,7 +124,7 @@ app.MapPost("/sell", async (TradeRequest tradeRequest, FinanceContext db, HttpCo
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = abfrager.GetStockQuote(tradeRequest.Symbol);
+    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
     if (aktienkurs == 0)
         return Results.NotFound();
     
@@ -183,7 +183,7 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
         {
             Symbol = gruppe.Key,
             Anzahl = gruppe.Sum((t=>t.Anzahl)),
-            Preis = abfrager.GetStockQuote(gruppe.Key),
+            Preis = abfrager.GetStockQuote(gruppe.Key).Result,
         });
     return new
     {
