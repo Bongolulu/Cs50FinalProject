@@ -176,7 +176,7 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
     // benutzer aus db holen:
     var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
-    return  db.Transaktionen
+    var bestand = db.Transaktionen
         .Where(t => t.Benutzer == benutzer)
         .GroupBy(t => t.Symbol).AsEnumerable()
         .Select(gruppe => new
@@ -185,7 +185,12 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
             Anzahl = gruppe.Sum((t=>t.Anzahl)),
             Preis = abfrager.GetStockQuote(gruppe.Key),
         });
-
+    return new
+    {
+        Bargeld = benutzer.Bargeld,
+        Bestand = bestand,
+        Name = benutzer.Name
+    };
     // Gesamtsumme der Aktien:
 
 
