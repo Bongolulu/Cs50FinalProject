@@ -1,9 +1,6 @@
-
-
 using System.ComponentModel.DataAnnotations;
-using finance.Helper;
 
-namespace Classes;
+namespace finance.Models;
 
 public class LoginRequest
 {

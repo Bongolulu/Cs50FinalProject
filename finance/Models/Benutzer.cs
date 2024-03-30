@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Classes;
+namespace finance.Models;
 
 public class Benutzer
 {

@@ -1,4 +1,4 @@
-namespace Classes;
+namespace finance.Models;
 
 public class Transaktion
 {    

@@ -1,5 +1,5 @@
 using System.Configuration;
-using Classes;
+using finance.datenbank;
 using finance.Helper;
 using finance.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,6 +21,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
+builder.Services.AddAuthorization();
 
 // Danach rufe ich Methode .Build auf um mit den Bausteinen die Webapplikation zusammenzustellen.
 var app = builder.Build();
@@ -52,6 +53,7 @@ app.MapPost("/register", async (RegisterRequest registerRequest, FinanceContext 
 app.MapPost("/login", async (LoginRequest loginRequest, FinanceContext db, IJwtProvider jwtProvider) =>
 {
     var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == loginRequest.Benutzername);
+    
 
     // checken, ob Benutzername in db vorhanden und wenn ja, ob Passwort stimmt
     if (benutzer is null || !benutzer.PasswortPrüfen(loginRequest.Passwort))
@@ -59,7 +61,8 @@ app.MapPost("/login", async (LoginRequest loginRequest, FinanceContext db, IJwtP
     
     
     string token = await jwtProvider.GenerateAsync(benutzer);
-    return Results.Ok(token);
+    return Results.Ok(new LoginResponse(token));
+    
 }).Validate<LoginRequest>();
 
 /*

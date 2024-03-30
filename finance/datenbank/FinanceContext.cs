@@ -1,7 +1,7 @@
-using Classes;
+using finance.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace finance.Models;
+namespace finance.datenbank;
     // Klasse
 public class FinanceContext : DbContext
 {   // Konstruktor
