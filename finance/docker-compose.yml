@@ -1,0 +1,26 @@
+﻿services:
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    container_name: database
+    hostname: finance-database
+    environment:
+      POSTGRES_PASSWORD: Password12!
+      POSTGRES_USER: myUser
+      POSTGRES_DB: myDatabase
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=de_DE.utf8"
+      LANG: de_DE.utf8
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+      PGADMIN_DEFAULT_PASSWORD: strong-password
+    
