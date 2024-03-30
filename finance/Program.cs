@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // DB. Baustein DB wird dem builder hinzugefügt.
 builder.Services.AddDbContext<FinanceContext>(opt => 
-    opt.UseNpgsql("Server=localhost;Port=5432;Database=finance;Username=myUser;Password=Password12!"));
+    opt.UseNpgsql("Server=192.168.2.2;Port=5432;Database=finance;Username=myUser;Password=Password12!"));
 
 // Danach rufe ich Methode .Build auf um mit den Bausteinen die Webapplikation zusammenzustellen.
 var app = builder.Build();
@@ -20,14 +20,29 @@ var app = builder.Build();
 // 
 app.MapPost("/register", async (RegisterRequest registerRequest, FinanceContext db) =>
 {
+    // Checken, ob der Benutzername schon existiert, falls ja, Fehlermeldung
+    if (db.Benutzer.Count(benutzer => benutzer.Name == registerRequest.Benutzername) >0)
+        return Results.BadRequest("Der Benutzername existiert bereits.");
+    
+    // Checken, ob Passwort eingegeben, falls nein, Fehlermeldung
+    if (db.Benutzer.Entry(benutzer.PasswortHash == registerRequest.Passwort))
+        return Results.BadRequest("Bitte Passwort eingeben.");
+    
+    // Checken, ob zweite Passworteingabe korrekt, falls nein, Fehlermeldung
+    
+    
+    
+    
+    // Neuen Benutzer in DB anlegen:
     Benutzer neuerBenutzer = new Benutzer(registerRequest.Benutzername, registerRequest.Passwort);
     db.Benutzer.Add(neuerBenutzer);
+    
     //in db speichern:
     await db.SaveChangesAsync();
 
     return Results.Created($"/register/{neuerBenutzer.BenutzerId}", neuerBenutzer);
+    
 });
-
 
 /*
 // Route buy post
