@@ -1,9 +1,11 @@
+using NodaTime;
+
 namespace finance.Models;
 
 public class Transaktion
 {    
     // Eigenschaften (sozusagen klassen-variablen)
-    // bei allen eigenshaften: Zugriff Typ Name z.b. public int wurst
+    // bei allen Eigenschaften: Zugriff Typ Name z.b. public int wurst
    
     public Guid TransaktionId { get; set; }
     public Benutzer Benutzer { get; set; }
@@ -15,7 +17,7 @@ public class Transaktion
     {
         get { return Preis * Anzahl; }
     }
-    public DateTime DatumZeit { get; set; }
+    public Instant DatumZeit { get; set; }
 
     
     // konstruktur (wird aufgerufen wenn man eine neue transaktion macht)
@@ -34,7 +36,7 @@ public class Transaktion
         Symbol = symbol;
         Anzahl = anzahl;
         Preis = preis;
-        DatumZeit = DateTime.Now;   //Das gibt der User nicht ein. DateTime ist ein Typ und Klasse und DateTime.Now ist ein tatsächlicher Wert 
+        DatumZeit = SystemClock.Instance.GetCurrentInstant();   //Das gibt der User nicht ein. DateTime ist ein Typ und Klasse und DateTime.Now ist ein tatsächlicher Wert 
     }                                   // für eine Uhrzeit.
 
     

@@ -20,6 +20,7 @@ public class AktienKursAbfrager
 
     public async Task<decimal> GetStockQuote(string symbol)
     {
+        return 10.23m;
         string url = $"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={apiKey}";
         string jsonResponse = await MakeRequest(url);
 

@@ -17,6 +17,7 @@ public sealed class JwtProvider(IOptions<JwtOptions> options)
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Name.ToString()),
+            new Claim(ClaimTypes.Name, user.Name),
             
         };
         

@@ -4,6 +4,7 @@ using finance.Helper;
 using finance.Models;
 using Infrastructure.OptionsSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.CodeAnalysis.Elfie.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
@@ -19,7 +20,7 @@ builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 
 // DB. Baustein DB wird dem builder hinzugefügt.
 builder.Services.AddDbContext<FinanceContext>(opt => 
-    opt.UseNpgsql("Server=192.168.2.2;Port=5432;Database=finance;Username=myUser;Password=Password12!"));
+    opt.UseNpgsql("Server=192.168.2.2;Port=5432;Database=finance;Username=myUser;Password=Password12!", o=> o.UseNodaTime()));
 
 //Authentifizierung mit Token (bedeutet nur 1x einloggen und mit jeder weiteren Abfrage wird der Token geschickt.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -77,87 +78,119 @@ app.MapPost("/quote", async (QuoteRequest quoteRequest, FinanceContext db) =>
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
     decimal aktienkurs = await abfrager.GetStockQuote(quoteRequest.Symbol);
-
+    if (aktienkurs == 0)
+        return Results.NotFound();
     return Results.Ok(aktienkurs);
-}).RequireAuthorization();
+}).RequireAuthorization().Validate<QuoteRequest>();
 
-
-
-/*
 // Route buy post
-app.MapPost("/buy", async (Todo todo, FinanceContext db) =>
+app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpContext context) =>
 {
-    db.Todos.Add(todo);
+    // Aktuellen Aktienkurs abfragen:
+    AktienKursAbfrager abfrager = new AktienKursAbfrager();
+    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
+    if (aktienkurs == 0)
+        return Results.NotFound();
+    
+    // Kaufkosten berechnen:
+    decimal kaufkosten = tradeRequest.Anzahl * aktienkurs;
+    
+    // benutzer aus db holen:
+    var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
+    
+    // Steht noch genug Geld zur Verfügung?
+    if (benutzer.Bargeld < kaufkosten)
+        return Results.BadRequest("Nicht genügend Geld vorhanden.");
+    
+    // Wie viel Geld ist vorhanden?
+    decimal neuerKontostand = benutzer.Bargeld - kaufkosten;
+    
+    // Kauf in DB einfügen:
+    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, tradeRequest.Anzahl, aktienkurs);
+    db.Transaktionen.Add(neueTransaktion);
+    
+    // DB aktualisieren (Bargeld)
+    benutzer.Bargeld = neuerKontostand;
+    
+    //in db speichern:
     await db.SaveChangesAsync();
-
-    return Results.Created($"/buy/{todo.Id}", todo);
-});
-
-// Route history get
-app.MapGet("/history", async (FinanceContext db) =>
-    "kommt noch");
-
-// Route index get
-app.MapGet("/index", async (FinanceContext db) =>
-    "kommt noch");
-
-
-
+    
+    return Results.Created();
+}).RequireAuthorization().Validate<TradeRequest>();
 
 // Route sell post
-app.MapPost("/sell", async (Todo todo, FinanceContext db) =>
+
+app.MapPost("/sell", async (TradeRequest tradeRequest, FinanceContext db, HttpContext context) =>
 {
-    db.Todos.Add(todo);
+    // Aktuellen Aktienkurs abfragen:
+    AktienKursAbfrager abfrager = new AktienKursAbfrager();
+    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
+    if (aktienkurs == 0)
+        return Results.NotFound();
+    
+    // Verkaufskosten berechnen:
+    decimal verkaufserloes = tradeRequest.Anzahl * aktienkurs;
+    
+    // benutzer aus db holen:
+    var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
+    
+    // Aktuelle Anzahl Aktien aus DB holen.
+    var aktienbestand = db.Transaktionen
+        .Where(t => t.Benutzer == benutzer && t.Symbol == tradeRequest.Symbol)
+        .Sum(t=>t.Anzahl);
+    
+    // Sind noch genügend Aktien vorhanden?
+    
+    if (tradeRequest.Anzahl > aktienbestand)
+        return Results.BadRequest("Nicht genügend Aktien vorhanden. Du hast "+aktienbestand+".");
+    
+    // Wie viel Geld ist vorhanden?
+    decimal neuerKontostand = benutzer.Bargeld + verkaufserloes;
+    
+    // Verkauf in DB einfügen:
+    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, -tradeRequest.Anzahl, aktienkurs);
+    db.Transaktionen.Add(neueTransaktion);
+    
+    // DB aktualisieren (Bargeld)
+    benutzer.Bargeld = neuerKontostand;
+    
+    //in db speichern:
     await db.SaveChangesAsync();
+    
+    return Results.Created();
+}).RequireAuthorization().Validate<TradeRequest>();
 
-    return Results.Created($"/sell/{todo.Id}", todo);
-});
 
-
-
-    //await db.Benutzer.ToListAsync());
-/*
-app.MapGet("/todoitems/complete", async (FinanceContext db) =>
-    await db.Todos.Where(t => t.IsComplete).ToListAsync());
-
-app.MapGet("/todoitems/{id}", async (int id, FinanceContext db) =>
-    await db.Todos.FindAsync(id)
-        is Todo todo
-        ? Results.Ok(todo)
-        : Results.NotFound());
-
-app.MapPost("/todoitems", async (Todo todo, FinanceContext db) =>
+// Route history get
+app.MapGet("/history", async (FinanceContext db, HttpContext context) =>
 {
-    db.Todos.Add(todo);
-    await db.SaveChangesAsync();
-
-    return Results.Created($"/todoitems/{todo.Id}", todo);
+    // benutzer aus db holen:
+    var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
+    return db.Transaktionen
+        .Where(t => t.Benutzer == benutzer);
 });
 
-app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, FinanceContext db) =>
+// Route portfolio get
+app.MapGet("/", async (FinanceContext db, HttpContext context) =>
 {
-    var todo = await db.Todos.FindAsync(id);
+    AktienKursAbfrager abfrager = new AktienKursAbfrager();
+    // benutzer aus db holen:
+    var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
+    return  db.Transaktionen
+        .Where(t => t.Benutzer == benutzer)
+        .GroupBy(t => t.Symbol).AsEnumerable()
+        .Select(async gruppe => new
+        {
+            Symbol = gruppe.Key,
+            Anzahl = gruppe.Sum((t=>t.Anzahl)),
+            Preis = await abfrager.GetStockQuote(gruppe.Key),
+        }).ToList();
 
-    if (todo is null) return Results.NotFound();
+    // Gesamtsumme der Aktien:
 
-    todo.Name = inputTodo.Name;
-    todo.IsComplete = inputTodo.IsComplete;
 
-    await db.SaveChangesAsync();
+    // Bargeld:
 
-    return Results.NoContent();
+    // Gesamtsumme Geld
 });
-
-app.MapDelete("/todoitems/{id}", async (int id, FinanceContext db) =>
-{
-    if (await db.Todos.FindAsync(id) is Todo todo)
-    {
-        db.Todos.Remove(todo);
-        await db.SaveChangesAsync();
-        return Results.NoContent();
-    }
-
-    return Results.NotFound();
-});
-*/
 app.Run();
