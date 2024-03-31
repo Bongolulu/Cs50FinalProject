@@ -126,7 +126,7 @@ app.MapPost("/sell", async (TradeRequest tradeRequest, FinanceContext db, HttpCo
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
     decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
     if (aktienkurs == 0)
-        return Results.NotFound();
+       return Results.NotFound();
     
     // Verkaufskosten berechnen:
     decimal verkaufserloes = tradeRequest.Anzahl * aktienkurs;
@@ -179,17 +179,17 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
     var bestand = db.Transaktionen
         .Where(t => t.Benutzer == benutzer)
         .GroupBy(t => t.Symbol).AsEnumerable()
-        .Select(gruppe => new
+        .Select(gruppe => new PortfolioEintrag()
         {
             Symbol = gruppe.Key,
-            Anzahl = gruppe.Sum((t=>t.Anzahl)),
+            Anzahl = gruppe.Sum((t => t.Anzahl)),
             Preis = abfrager.GetStockQuote(gruppe.Key).Result,
-        });
+        })
+        .Where(p => p.Anzahl != 0);
     return new
     {
         Bargeld = benutzer.Bargeld,
         Bestand = bestand,
-        Name = benutzer.Name
     };
     // Gesamtsumme der Aktien:
 
