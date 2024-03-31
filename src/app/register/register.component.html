@@ -1,0 +1,38 @@
+<form [formGroup]="registerForm" (submit)="Register()">
+    <div class="mb-3">
+        <input 
+        autocomplete="off" 
+        autofocus 
+        class="form-control mx-auto w-auto" 
+        name="username"
+        formControlName="username"
+        placeholder="Username"
+        type="text">
+        @if (registerForm.controls['username'].dirty || registerForm.controls['username'].touched) {
+            @if (registerForm.controls['username'].errors?.['required']){
+                <p class= "error">Bitte Benutzername eingeben.</p>
+            }
+            @if (registerForm.controls['username'].errors?.['minlength']){
+                <p class= "error">Bitte mindestens 5 Zeichen eingeben.</p>
+            }     
+        }
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" name="password" formControlName="password" placeholder="Password" type="password">
+        @if (registerForm.controls['password'].dirty || registerForm.controls['password'].touched) {
+            @if (registerForm.controls['password'].errors?.['required']){
+                <p class= "error">Bitte Passwort eingeben.</p>
+            }
+        }
+        
+    </div>
+    <div class="mb-3">
+        <input class="form-control mx-auto w-auto" name="confirmation" formControlName="confirmation" placeholder="Bestaetigung" type="password">
+        @if (registerForm.controls['confirmation'].dirty || registerForm.controls['confirmation'].touched) {
+            @if (registerForm.controls['confirmation'].errors?.['required']){
+                <p class= "error">Bitte Passwort wiederholen.</p>
+            }
+        }
+    </div>
+    <button [disabled]="!registerForm.valid" class="btn btn-primary" type="submit">Register</button>
+</form>
