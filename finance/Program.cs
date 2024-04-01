@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddCors(o =>
     o.AddPolicy("financeangular", b => b
-        .WithOrigins("http://localhost:4200")
+        .WithOrigins("http://localhost:4200","http://192.168.2.249:4200")
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()));
