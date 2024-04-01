@@ -21,5 +21,8 @@
             }
         }
     </div>
-    <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Register</button>
+    <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Login</button>
+    @if (loginFehler){
+        <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">Login fehlgeschlagen.</div>
+        }
 </form>

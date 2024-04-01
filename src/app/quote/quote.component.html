@@ -1,6 +1,6 @@
-<form action="/quote" method="post">
-    <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Symbol"
+<form [formGroup]="quoteForm" (submit)="Quote()">
+    <div class="mb-3"> 
+        <input formControlName="symbol" autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Symbol"
             type="text">
     </div>
     <button class="btn btn-primary" type="submit">Get quote</button>

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-history',
@@ -7,6 +8,21 @@ import { Component } from '@angular/core';
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
-export class HistoryComponent {
-history = []
+export class HistoryComponent implements OnInit {
+
+  constructor(private apiService: ApiService) { }
+
+  public history = []
+
+  ngOnInit(): void {
+    this.apiService.History().subscribe({
+      next: (antwort) => {
+        this.history=antwort
+      },
+      error: (fehler) => {
+        console.log(fehler);
+      }
+    })
+  }
+
 }

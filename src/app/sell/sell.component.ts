@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sell',
@@ -12,4 +14,6 @@ export class SellComponent {
 
   //Fehlermeldung:
   fehler: string = "Hier kommen später verschiedene Fehler hin, z.B. wenn man wurst eingibt"
+
+  constructor(private apiService: ApiService, private router: Router) { }
 }

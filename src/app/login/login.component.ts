@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ApiService } from '../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,13 +12,29 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class LoginComponent {
   public loginForm: FormGroup = new FormGroup({
-    username: new FormControl ('', [Validators.required], []),
-    password: new FormControl ('', [Validators.required], []),
+    username: new FormControl('', [Validators.required], []),
+    password: new FormControl('', [Validators.required], []),
   });
 
-  constructor(){
-    this.loginForm.valueChanges.subscribe(console.log)
+  constructor(private apiService: ApiService, private router: Router) { }
+
+  loginFehler: boolean = false;
+
+  Login() {
+
+    this.loginFehler = false;
+    this.apiService.Login(
+      {
+        benutzername: this.loginForm.value.username,
+        passwort: this.loginForm.value.password
+      }).subscribe({ next: (res) => this.hatGeklappt(res), error: (f) => this.hatNichtGeklappt(f) })
   }
-  Login(){
+
+  hatGeklappt(res: any) {
+    this.router.navigateByUrl("/")
+  }
+
+  hatNichtGeklappt(f: any) {
+    this.loginFehler = true;
   }
 }

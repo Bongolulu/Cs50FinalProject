@@ -11,16 +11,16 @@
         </tr>
     </thead>
     <tbody>
-        <!-- TODO: Loop through the database entries to display them in this table -->
+        <!-- Loop through the database entries to display them in this table -->
         @for (transaction of history; track $index){
         <tr>
             <td>{{ transaction['datetime'] }}</td>
             <td>{{ transaction['symbol'] }}</td>
-            <td>{{ transaction['shares'] }}</td>
-            <td>{{ transaction['price'] }}</td>
-            <td>{{ transaction['total'] }}</td>
-            <td>{{ transaction['buysell'] }}</td>
+            <td>{{ transaction['anzahl'] }}</td>
+            <td>{{ transaction['preis'] }}</td>
+            <td>{{ transaction['gesamtpreis'] }}</td>
+            <td>{{ transaction['anzahl']>0? "Kauf":"Verkauf" }}</td>
         </tr>
-    }
+        }
     </tbody>
 </table>
