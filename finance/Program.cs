@@ -26,12 +26,20 @@ builder.Services.AddDbContext<FinanceContext>(opt =>
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer();
 
+builder.Services.AddCors(o =>
+    o.AddPolicy("financeangular", b => b
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()));
+
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddAuthorization();
 
 // Danach rufe ich Methode .Build auf um mit den Bausteinen die Webapplikation zusammenzustellen.
 var app = builder.Build();
 
+app.UseCors("financeangular");
 app.UseAuthentication();
 app.UseAuthorization();
 
