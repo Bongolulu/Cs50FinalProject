@@ -12,11 +12,12 @@ export class HistoryComponent implements OnInit {
 
   constructor(private apiService: ApiService) { }
 
-  public history = []
+  public history = [] 
 
   ngOnInit(): void {
     this.apiService.History().subscribe({
       next: (antwort) => {
+        console.log(antwort)
         this.history=antwort
       },
       error: (fehler) => {

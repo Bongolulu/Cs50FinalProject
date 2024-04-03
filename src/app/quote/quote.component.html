@@ -1,14 +1,24 @@
 <form [formGroup]="quoteForm" (submit)="Quote()">
-    <div class="mb-3"> 
-        <input formControlName="symbol" autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Symbol"
-            type="text">
-    </div>
-    <button class="btn btn-primary" type="submit">Get quote</button>
+  <div class="mb-3">
+    <input
+      formControlName="symbol"
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      name="symbol"
+      placeholder="Symbol"
+      type="text"
+    />
+  </div>
+  <button class="btn btn-primary" type="submit">Get quote</button>
 </form>
 
 @if (symbol){
-<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ symbol }}:{{ preis}}</div>
-}
-@if (fehler){
-<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">Symbol nicht gefunden</div>
+<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
+  {{ symbol }} {{ name }}: {{ preis }}
+</div>
+} @if (fehler){
+<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
+  {{ fehler }}
+</div>
 }

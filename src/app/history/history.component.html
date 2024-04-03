@@ -4,6 +4,7 @@
         <tr>
             <th>Zeitpunkt</th>
             <th>Symbol</th>
+            <th>Name</th>            
             <th>Anzahl</th>
             <th>Preis</th>
             <th>Gesamtwert</th>
@@ -14,8 +15,9 @@
         <!-- Loop through the database entries to display them in this table -->
         @for (transaction of history; track $index){
         <tr>
-            <td>{{ transaction['datetime'] }}</td>
+            <td>{{ transaction['datumZeitIso'] }}</td>
             <td>{{ transaction['symbol'] }}</td>
+            <td>{{ transaction['name'] }}</td>
             <td>{{ transaction['anzahl'] }}</td>
             <td>{{ transaction['preis'] }}</td>
             <td>{{ transaction['gesamtpreis'] }}</td>

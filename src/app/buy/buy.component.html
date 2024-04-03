@@ -1,20 +1,18 @@
-<form action="/buy" method="post">
+<form [formGroup]="buyForm" (submit)="Buy()"> <!-- Formular -->
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="Symbol"
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" formControlName="symbol" placeholder="Symbol"
             type="text">
     </div>
+    <div class="mb-3">
+        <input autocomplete="off" class="form-control mx-auto w-auto" formControlName="anzahl" placeholder="Anteile"
+            type="text">
+    </div><!-- button -->
+    <button class="btn btn-primary" type="submit">buy</button>
 
-    @if (symbol) {
-    <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ symbol }}:{{ preis }}</div>
-    }
+   <!-- Fehlermeldung -->
     @if (fehler) {
     <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ fehler }}</div>
     }
-    <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="shares" placeholder="Anteile"
-            type="text">
-    </div>
-    <button class="btn btn-primary" type="submit">buy</button>
 </form>
 
 

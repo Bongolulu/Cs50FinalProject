@@ -1,28 +1,40 @@
 <form [formGroup]="loginForm" (submit)="Login()">
-    <div class="mb-3">
-        <input 
-        autocomplete="off" 
-        autofocus class="form-control mx-auto w-auto" 
-        name="username" 
-        formControlName="username"
-        placeholder="Username" 
-        type="text">
-        @if (loginForm.controls['username'].dirty || loginForm.controls['username'].touched){
-            @if (loginForm.controls['username'].errors?.['required']){
-                <p class= "error">Bitte Benutzername eingeben.</p>
-            }
-        }
-    </div>
-    <div class="mb-3">
-        <input class="form-control mx-auto w-auto" name="password" formControlName="password" placeholder="Password" type="password">
-        @if (loginForm.controls['password'].dirty || loginForm.controls['password'].touched) {
-            @if (loginForm.controls['password'].errors?.['required']){
-                <p class= "error">Bitte Passwort eingeben.</p>
-            }
-        }
-    </div>
-    <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">Login</button>
-    @if (loginFehler){
-        <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">Login fehlgeschlagen.</div>
-        }
+  <div class="mb-3">
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      name="username"
+      formControlName="username"
+      placeholder="Username"
+      type="text"
+    />
+    @if (loginForm.controls['username'].dirty ||
+    loginForm.controls['username'].touched){ @if
+    (loginForm.controls['username'].errors?.['required']){
+    <p class="error">Bitte Benutzername eingeben.</p>
+    } }
+  </div>
+  <div class="mb-3">
+    <input
+      class="form-control mx-auto w-auto"
+      name="password"
+      formControlName="password"
+      placeholder="Password"
+      type="password"
+    />
+    @if (loginForm.controls['password'].dirty ||
+    loginForm.controls['password'].touched) { @if
+    (loginForm.controls['password'].errors?.['required']){
+    <p class="error">Bitte Passwort eingeben.</p>
+    } }
+  </div>
+  <button [disabled]="!loginForm.valid" class="btn btn-primary" type="submit">
+    Login
+  </button>
+  @if (loginFehler){
+  <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
+    Login fehlgeschlagen.
+  </div>
+  }
 </form>
