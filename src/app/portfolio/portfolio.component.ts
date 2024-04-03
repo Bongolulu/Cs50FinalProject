@@ -1,14 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
   imports: [],
   templateUrl: './portfolio.component.html',
-  styleUrl: './portfolio.component.scss'
+  styleUrl: './portfolio.component.scss',
 })
-export class PortfolioComponent {
-index =[]
-bargeld: number = 5
-gesamtbetrag: number = 4
+export class PortfolioComponent implements OnInit {
+  portfolio = [];
+  bargeld: number = 5;
+  gesamtwert: number = 4;
+
+  constructor(private apiService: ApiService) {}
+  ngOnInit(): void {
+    this.apiService.Portfolio().subscribe({ //Ich rufe die Funktion im api.service.ts ab
+      next: (antwort) => {
+        console.log(antwort);
+        this.portfolio = antwort;
+      },
+      error: (fehler) => {
+        console.log(fehler);
+      },
+    });
+  }
 }
