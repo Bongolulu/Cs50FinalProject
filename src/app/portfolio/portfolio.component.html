@@ -4,12 +4,13 @@
   <thead>
     <tr>
       <th class="text-start"></th>
-      <th class="text-start">Anzahl</th>
+      <th class="text-start">Trade</th>
       <th class="text-start"></th>
       <th class="text-start">Symbol</th>
-      <th class="text-end">Anzahl</th>
-      <th class="text-end">Gesamtwert</th>
+      <th class="text-start">Name</th>
+      <th class="text-end">Bestand</th>
       <th class="text-end">Preis</th>
+      <th class="text-end">Gesamtwert</th>
     </tr>
   </thead>
   <tbody>
@@ -27,17 +28,20 @@
           placeholder="Symbol"
           type="text"
         />
-        <button class="btn btn-sm btn-outline-danger" type="submit">buy</button>
+        <button class="btn btn-sm btn-outline-danger">buy</button>
       </td>
+
       <td class="text-start">
         <input
           autocomplete="off"
           class="form-control mx-auto input-sm"
           name="shares"
-          placeholder="Anteile"
           type="text"
+          [(value)]="transaction['anzahl']"
+          (blur)="Test()"
         />
       </td>
+
       <td class="text-start">
         <button
           formaction="/sell"
@@ -47,21 +51,25 @@
           sell
         </button>
       </td>
+
       <td class="text-start">{{ transaction["symbol"] }}</td>
+      <td class="text-start">{{ transaction["name"] }}</td>
       <td class="text-end">{{ transaction["anzahl"] }}</td>
       <td class="text-end">{{ transaction["preis"] }}</td>
-      <td class="text-end">{{ transaction["total"] }}</td>
+      <td class="text-end">
+        {{ transaction["preis"] * transaction["anzahl"] }}
+      </td>
     </tr>
     }
   </tbody>
   <tfoot>
     <tr>
-      <td class="border-0 fw-bold text-end" colspan="3">Cash</td>
+      <td class="border-0 fw-bold text-end" colspan="3">Bargeld</td>
       <td class="border-0 text-end">{{ bargeld }}</td>
     </tr>
     <tr>
-      <td class="border-0 fw-bold text-end" colspan="3">TOTAL</td>
-      <td class="border-0 w-bold text-end">hier gesamtbetrag</td>
+      <td class="border-0 fw-bold text-end" colspan="3">Gesamtbetrag</td>
+      <td class="border-0 w-bold text-end">{{ gesamtbetrag }}</td>
     </tr>
   </tfoot>
 </table>
