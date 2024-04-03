@@ -1,63 +1,70 @@
 <h2>Depotbestand</h2>
+@if (portfolio) {
 <table class="table">
   <thead>
     <tr>
+      <th class="text-start"></th>
+      <th class="text-start">Anzahl</th>
+      <th class="text-start"></th>
       <th class="text-start">Symbol</th>
-      <th class="text-start">Name</th>
       <th class="text-end">Anzahl</th>
+      <th class="text-end">Gesamtwert</th>
       <th class="text-end">Preis</th>
-      <th class="text-end">GesamtAktie</th>
     </tr>
   </thead>
   <tbody>
     <!-- TODO: Loop through the database entries to display them in this table -->
     @for (transaction of portfolio; track $index){
     <tr>
-      <td>{{ transaction['symbol'] }}
-        <button class="btn btn-sm btn-outline-danger" type="submit">
-          buy
-          </button>
-        </td>
-        <td>{{ transaction['name'] }}</td>
-
-        <td class="text-start">
-          <input
-            autocomplete="off"
-            class="form-control mx-auto input-sm"
-            name="shares"
-            placeholder="Anteile"
-            type="text"
-          />
-        </td>
-        <td class="text-start">
-          <button
-            formaction="/sell"
-            class="btn btn-sm btn-outline-info"
-            type="submit"
-          >
-            sell
-          </button>
-        </td>
-        <td class="text-start">{{ transaction["symbol"] }}</td>
-        <td class="text-start">{{ transaction["name"] }}</td>
-        <td class="text-end">{{ transaction["anzahl"] }}</td>
-        <td class="text-end">{{ transaction["preis"] }}</td>
-        <td class="text-end">{{ transaction["gesamtAktie"] }}</td>
+      <td class="text-start">
+        <input
+          hidden
+          value="{{ transaction['symbol'] }}"
+          autocomplete="off"
+          autofocus
+          class="form-control mx-auto w-auto"
+          name="symbol"
+          placeholder="Symbol"
+          type="text"
+        />
+        <button class="btn btn-sm btn-outline-danger" type="submit">buy</button>
+      </td>
+      <td class="text-start">
+        <input
+          autocomplete="off"
+          class="form-control mx-auto input-sm"
+          name="shares"
+          placeholder="Anteile"
+          type="text"
+        />
+      </td>
+      <td class="text-start">
+        <button
+          formaction="/sell"
+          class="btn btn-sm btn-outline-info"
+          type="submit"
+        >
+          sell
+        </button>
+      </td>
+      <td class="text-start">{{ transaction["symbol"] }}</td>
+      <td class="text-end">{{ transaction["anzahl"] }}</td>
+      <td class="text-end">{{ transaction["preis"] }}</td>
+      <td class="text-end">{{ transaction["total"] }}</td>
     </tr>
     }
   </tbody>
   <tfoot>
     <tr>
-      <td class="border-0 fw-bold text-end" colspan="3">Bargeld</td>
+      <td class="border-0 fw-bold text-end" colspan="3">Cash</td>
       <td class="border-0 text-end">{{ bargeld }}</td>
     </tr>
     <tr>
-      <td class="border-0 fw-bold text-end" colspan="3">Gesamtwert</td>
-      <!--Das schreibt die gesamte Reihe mit Zahl-->
-      <td class="border-0 w-bold text-end">{{ gesamtwert }}</td>
-      <!-- das schreibt die Zahl 4 in das Feld-->
+      <td class="border-0 fw-bold text-end" colspan="3">TOTAL</td>
+      <td class="border-0 w-bold text-end">hier gesamtbetrag</td>
     </tr>
   </tfoot>
 </table>
+}
 
 <!-- select symbol, sum (shares) as shares from history where users_id=***eingeloggter user*** group by symbol; macht Tabelle mit Symbol und Summe Anzahl Aktien (total)-->
