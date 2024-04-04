@@ -1,6 +1,6 @@
 <h2>Depotbestand</h2>
 @if (portfolio) {
-<table class="table">
+<table class="table table-hover">
   <thead>
     <tr>
       <th class="text-start"></th>
@@ -18,16 +18,6 @@
     @for (transaction of portfolio; track $index){
     <tr>
       <td class="text-start">
-        <input
-          hidden
-          value="{{ transaction['symbol'] }}"
-          autocomplete="off"
-          autofocus
-          class="form-control mx-auto w-auto"
-          name="symbol"
-          placeholder="Symbol"
-          type="text"
-        />
         <button (click)="Buy($index)" class="btn btn-sm btn-outline-danger">
           buy
         </button>
@@ -57,7 +47,7 @@
       <td class="text-start">{{ transaction["symbol"] }}</td>
       <td class="text-start">{{ transaction["name"] }}</td>
       <td class="text-end">{{ transaction["anzahl"] }}</td>
-      <td class="text-end">{{ transaction["preis"] | usdCurrency}}</td>
+      <td class="text-end">{{ transaction["preis"] | usdCurrency }}</td>
       <td class="text-end">
         {{ transaction["preis"] * transaction["anzahl"] | usdCurrency }}
       </td>
@@ -67,11 +57,11 @@
   <tfoot>
     <tr>
       <td class="border-0 fw-bold text-end" colspan="3">Bargeld</td>
-      <td class="border-0 text-end">{{ bargeld | usdCurrency}}</td>
+      <td class="border-0 text-end">{{ bargeld | usdCurrency }}</td>
     </tr>
     <tr>
       <td class="border-0 fw-bold text-end" colspan="3">Gesamtbetrag</td>
-      <td class="border-0 w-bold text-end">{{ gesamtbetrag |usdCurrency }}</td>
+      <td class="border-0 w-bold text-end">{{ gesamtbetrag | usdCurrency }}</td>
     </tr>
   </tfoot>
 </table>

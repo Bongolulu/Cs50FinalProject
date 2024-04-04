@@ -43,7 +43,7 @@ export class BuyComponent {
         Anzahl: this.buyForm.value.anzahl,
       })
       .subscribe({
-        next: (antwort) => {
+        next: (antwort) => { 
           this.router.navigateByUrl('/');
           // irgendwann mal checken wieso nur .navigate nicht richtig geht
         },

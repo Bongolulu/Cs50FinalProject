@@ -3,16 +3,18 @@
         <input autocomplete="off" autofocus class="form-control mx-auto w-auto" formControlName="symbol" placeholder="Symbol"
             type="text">
     </div>
-    <div class="mb-3">
+    <div class="mb-4">
         <input autocomplete="off" class="form-control mx-auto w-auto" formControlName="anzahl" placeholder="Anzahl"
-            type="text">
+            type="number">
     </div><!-- button --> 
-    <button class="btn btn-primary" type="submit">buy</button>
+    <button class="buttonBuy" type="submit">Buy</button>
+
 
    <!-- Fehlermeldung -->
     @if (fehler) {
     <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ fehler }}</div>
     }
 </form>
+
 
 

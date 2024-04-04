@@ -1,0 +1,24 @@
+.buttonSell {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #17a2b8;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.buttonSell:hover {
+  background-color: #107180;
+}
+
+.buttonSell:active {
+  background-color: #0b515c;
+  box-shadow: 0 4px #5863625b;
+  transform: translateY(4px);
+}

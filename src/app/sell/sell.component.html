@@ -1,20 +1,30 @@
-<form [formGroup]="sellForm" (submit)="Sell()"> <!-- Formular -->
-    <label for="options">Wähle eine Aktie:</label>
-    <select formControlName="symbol" class="form-control mx-auto w-auto">
-        <option disabled="" selected="">Symbol</option>
-        @for (symbol of symbole; track $index) {
-            <option value={{symbol}}>{{symbol}}</option>
-        }
-    </select>
-   
-    <div class="mb-4">
-        <input autocomplete="off" class="form-control mx-auto w-auto" min="1" formControlName="anzahl" placeholder="Anzahl"
-            type="number">
-        </div>
-    <div class="mb-4">
-    <button class="btn btn-primary" type="submit">sell</button>
-    </div>
-</form> <!--Fehlermeldung-->
-    @if (fehler) {
-<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ fehler }}</div>
+<form [formGroup]="sellForm" (submit)="Sell()">
+  <!-- Formular -->
+  <label for="options">Wähle eine Aktie:</label>    <!-- label = dropdown-menue -->
+  <select formControlName="symbol" class="form-control mx-auto w-auto">
+    <option disabled="" selected="">Symbol</option>
+    @for (symbol of symbole; track $index) {
+    <option value="{{ symbol }}">{{ symbol }}</option>
     }
+  </select>
+
+  <div class="mb-3">
+    <input
+      autocomplete="off"
+      class="form-control mx-auto w-auto"
+      min="1"
+      formControlName="anzahl"
+      placeholder="Anzahl"
+      type="number"
+    />
+  </div>
+  <div class="mb-4">
+    <button class="buttonSell" type="submit">Sell</button>
+  </div>
+</form>
+<!--Fehlermeldung-->
+@if (fehler) {
+<div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
+  {{ fehler }}
+</div>
+}
