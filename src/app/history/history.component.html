@@ -1,28 +1,30 @@
 <h2>History</h2>
 <table class="table">
-    <thead>
-        <tr>
-            <th>Zeitpunkt</th>
-            <th>Symbol</th>
-            <th>Name</th>            
-            <th>Anzahl</th>
-            <th>Preis</th>
-            <th>Gesamtwert</th>
-            <th>Kauf/Verkauf</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Loop through the database entries to display them in this table -->
-        @for (transaction of history; track $index){
-        <tr>
-            <td>{{ transaction['datumZeitIso'] }}</td>
-            <td>{{ transaction['symbol'] }}</td>
-            <td>{{ transaction['name'] }}</td>
-            <td>{{ transaction['anzahl'] }}</td>
-            <td>{{ transaction['preis'] }}</td>
-            <td>{{ transaction['gesamtpreis'] }}</td>
-            <td>{{ transaction['anzahl']>0? "Kauf":"Verkauf" }}</td>
-        </tr>
-        }
-    </tbody>
+  <thead>
+    <tr>
+      <th class="text-start">Zeitpunkt</th>
+      <th class="text-start">Symbol</th>
+      <th class="text-start">Name</th>
+      <th class="text-end">Anzahl</th>
+      <th class="text-end">Preis</th>
+      <th class="text-end">Gesamtwert</th>
+      <th class="text-end">Kauf/Verkauf</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Loop through the database entries to display them in this table -->
+    @for (transaction of history; track $index){
+    <tr>
+      <td class="text-start">{{ transaction["datumZeitIso"] }}</td>
+      <td class="text-start">{{ transaction["symbol"] }}</td>
+      <td class="text-start">{{ transaction["name"] }}</td>
+      <td class="text-end">{{ transaction["anzahl"] }}</td>
+      <td class="text-end">{{ transaction["preis"] | usdCurrency }}</td>
+      <td class="text-end">{{ transaction["gesamtpreis"] | usdCurrency }}</td>
+      <td class="text-end">
+        {{ transaction["anzahl"] > 0 ? "Kauf" : "Verkauf" }}
+      </td>
+    </tr>
+    }
+  </tbody>
 </table>

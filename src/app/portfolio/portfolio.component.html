@@ -28,7 +28,9 @@
           placeholder="Symbol"
           type="text"
         />
-        <button class="btn btn-sm btn-outline-danger">buy</button>
+        <button (click)="Buy($index)" class="btn btn-sm btn-outline-danger">
+          buy
+        </button>
       </td>
 
       <td class="text-start">
@@ -37,8 +39,8 @@
           class="form-control mx-auto input-sm"
           name="shares"
           type="text"
-          [(value)]="transaction['anzahl']"
-          (blur)="Test()"
+          placeholder="Bitte Anzahl eingeben"
+          [(ngModel)]="transaction.tradeanzahl"
         />
       </td>
 
@@ -46,7 +48,7 @@
         <button
           formaction="/sell"
           class="btn btn-sm btn-outline-info"
-          type="submit"
+          (click)="Sell($index)"
         >
           sell
         </button>
@@ -55,9 +57,9 @@
       <td class="text-start">{{ transaction["symbol"] }}</td>
       <td class="text-start">{{ transaction["name"] }}</td>
       <td class="text-end">{{ transaction["anzahl"] }}</td>
-      <td class="text-end">{{ transaction["preis"] }}</td>
+      <td class="text-end">{{ transaction["preis"] | usdCurrency}}</td>
       <td class="text-end">
-        {{ transaction["preis"] * transaction["anzahl"] }}
+        {{ transaction["preis"] * transaction["anzahl"] | usdCurrency }}
       </td>
     </tr>
     }
@@ -65,11 +67,11 @@
   <tfoot>
     <tr>
       <td class="border-0 fw-bold text-end" colspan="3">Bargeld</td>
-      <td class="border-0 text-end">{{ bargeld }}</td>
+      <td class="border-0 text-end">{{ bargeld | usdCurrency}}</td>
     </tr>
     <tr>
       <td class="border-0 fw-bold text-end" colspan="3">Gesamtbetrag</td>
-      <td class="border-0 w-bold text-end">{{ gesamtbetrag }}</td>
+      <td class="border-0 w-bold text-end">{{ gesamtbetrag |usdCurrency }}</td>
     </tr>
   </tfoot>
 </table>

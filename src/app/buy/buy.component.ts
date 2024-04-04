@@ -49,9 +49,9 @@ export class BuyComponent {
         },
         error: (antwort: HttpErrorResponse) => {
           if (antwort.status == 404) {
-            this.fehler = 'nicht gefunden';
+            this.fehler = 'Es steht nicht genug Geld zur Verfügung!';
           } else {
-            this.fehler = 'nicht genug Geld';
+            this.fehler = 'Bitte Symbol eingeben!';
           }
           // wenn eine fehler antwort kommt
           // dann ist es entweder 404  (also symbol nicht gefunden), dann ist fehler.status == 404

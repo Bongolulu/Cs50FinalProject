@@ -22,7 +22,7 @@ export class ApiService {
   }
 
   Portfolio(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}`);  // Url abrufen
+    return this.http.get<any>(`${this.apiUrl}`); // Url abrufen
   }
 
   Register(data: any): Observable<any> {
@@ -34,10 +34,11 @@ export class ApiService {
   }
 
   Buy(data: any): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}buy`, data);
+    return this.http.post<any>(`${this.apiUrl}buy`, data);
   }
 
   Sell(data: any): Observable<any> {
+    console.log(data);
     return this.http.post<any>(`${this.apiUrl}sell`, data);
   }
 

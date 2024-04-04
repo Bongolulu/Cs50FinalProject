@@ -49,7 +49,7 @@ export class QuoteComponent {
         error: (fehler) => {
           // wenn eine fehler antwort komt
           console.log(fehler);
-          this.fehler = 'irgendein fehler';
+          this.fehler = 'Bitte Symbol eingeben!';
         },
       });
   }
