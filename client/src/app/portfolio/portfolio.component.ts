@@ -12,44 +12,7 @@ import { UsdCurrencyPipe } from '../helpers/usd-currency.pipe';
   styleUrl: './portfolio.component.scss',
 })
 export class PortfolioComponent implements OnInit {
-  portfolio: any = [
-    {
-      symbol: 'A',
-      anzahl: 2,
-      preis: 12500.23,
-      name: 'Limit erreicht',
-    },
-    {
-      symbol: 'AA',
-      anzahl: 11,
-      preis: 100,
-      name: 'Alcoa Corporation',
-    },
-    {
-      symbol: 'FSM',
-      anzahl: 3,
-      preis: 100,
-      name: 'Fortuna Silver Mines Inc.',
-    },
-    {
-      symbol: 'MMM',
-      anzahl: 5,
-      preis: 100,
-      name: '3M Company',
-    },
-    {
-      symbol: 'OVV',
-      anzahl: 4,
-      preis: 100,
-      name: 'Ovintiv Inc.',
-    },
-    {
-      symbol: 'TSLA',
-      anzahl: 65,
-      preis: 100,
-      name: 'Tesla, Inc.',
-    },
-  ];
+  portfolio: any = [];
   // TODO später any durch richtige typen ersetzen um fehler zu vermeiden
   bargeld: number = 223.32;
   gesamtbetrag: number = 4002.11;
@@ -91,7 +54,7 @@ export class PortfolioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /* this.apiService.Portfolio().subscribe({
+    this.apiService.Portfolio().subscribe({
       //Ich rufe die Funktion im api.service.ts ab
       next: (antwort) => {
         this.OkAntwort(antwort);
@@ -99,7 +62,7 @@ export class PortfolioComponent implements OnInit {
       error: (fehler) => {
         console.log(fehler);
       },
-    });*/
+    });
   }
 
   // Methoden:
