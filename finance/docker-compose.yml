@@ -13,14 +13,4 @@
       POSTGRES_DB: myDatabase
       POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=de_DE.utf8"
       LANG: de_DE.utf8
-      
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - "8888:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
-    
+   
