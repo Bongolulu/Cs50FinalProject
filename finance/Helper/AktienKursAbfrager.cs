@@ -9,7 +9,7 @@ namespace finance.Helper;
 public class AktienKursAbfrager
 {
 
-    private static string apiKey = "3nqsfES99bh9PF02I4GjPn1DoHXz73Js";
+    private static string apiKey = "JLEJvP0OA8hlBLuFuW6cW1IhGqhjDVTM";
     private static string baseurl = "https://financialmodelingprep.com/api/v3";
     private static string pquery = "query";
     private static string pkey = "apikey";
