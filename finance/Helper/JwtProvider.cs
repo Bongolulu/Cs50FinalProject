@@ -33,7 +33,7 @@ public sealed class JwtProvider(IOptions<JwtOptions> options)
             options.Value.Audience,
             claims,
             null,
-            DateTime.UtcNow.AddDays(1),
+            DateTime.UtcNow.AddMonths(1),
             signingCredentials);
 
         string tokenValue = new JwtSecurityTokenHandler()

@@ -10,6 +10,7 @@ public class Transaktion
     public Guid TransaktionId { get; set; }
     public Benutzer Benutzer { get; set; }
     public string Symbol { get; set; }
+    public string Name { get; set; }
     public int Anzahl { get; set; }
     public decimal Preis { get; set; }
 
@@ -19,13 +20,21 @@ public class Transaktion
     }
     public Instant DatumZeit { get; set; }
 
-    
+    public string DatumZeitIso
+    {
+        get
+        {
+           return  DatumZeit.ToString();
+        }
+    }
+
+
     // konstruktur (wird aufgerufen wenn man eine neue transaktion macht)
     public Transaktion()
     {
     }
 
-    public Transaktion(Benutzer benutzer, string symbol, int anzahl, decimal preis)
+    public Transaktion(Benutzer benutzer, string symbol,string name, int anzahl, decimal preis)
     {
         if (anzahl == 0)
         {
@@ -34,6 +43,7 @@ public class Transaktion
 
         Benutzer = benutzer;
         Symbol = symbol;
+        Name = name;
         Anzahl = anzahl;
         Preis = preis;
         DatumZeit = SystemClock.Instance.GetCurrentInstant();   //Das gibt der User nicht ein. DateTime ist ein Typ und Klasse und DateTime.Now ist ein tatsächlicher Wert 

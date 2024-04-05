@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NodaTime;
 
 #nullable disable
 
 namespace finance.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Neu : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,9 +33,10 @@ namespace finance.Migrations
                     TransaktionId = table.Column<Guid>(type: "uuid", nullable: false),
                     BenutzerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Symbol = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     Anzahl = table.Column<int>(type: "integer", nullable: false),
                     Preis = table.Column<decimal>(type: "numeric", nullable: false),
-                    DatumZeit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    DatumZeit = table.Column<Instant>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

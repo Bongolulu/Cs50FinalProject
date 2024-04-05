@@ -1,15 +1,10 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using finance.Models;
 using Newtonsoft.Json;
 
 namespace finance.Helper;
 
-public class StockPrice
-{
-    public string symbol { get; set; }
-    public string name { get; set; }
-    public decimal price { get; set; }
-}
 
 public class AktienKursAbfrager
 {
@@ -31,25 +26,30 @@ public class AktienKursAbfrager
         return jsonResponse; // Modify the return value based on your requirements
     }
 
-    public async Task<decimal> GetStockQuote(string symbol)
+    public async Task<QuoteResult?> GetStockQuote(string symbol)
     {
 
         string url = $"{baseurl}/quote-order/{symbol}?{pkey}={apiKey}";
+        try
+        {
         string json = await MakeRequest(url);
         json = Regex.Replace(json, @"\t|\n|\r", "");
 
         // Using System.Text.Json for JSON parsing (available in .NET Core 3.0+)
-        List<StockPrice> stockPrices = JsonConvert.DeserializeObject<List<StockPrice>>(json);
+      
 
-        try
-        {
-            //string quote = json.GetProperty("Global Quote").GetProperty("05. price").GetString();
-            //decimal stockQuote = decimal.Parse(quote);
-            return  stockPrices[0].price;
+            List<QuoteResult> stockPrices = JsonConvert.DeserializeObject<List<QuoteResult>>(json);
+
+            return stockPrices[0];
         }
         catch(Exception e)
         {
-            return 0;
+            return new QuoteResult()
+            {
+                name = "Limit erreicht",
+                symbol = "LIM",
+                price = 100
+            };
         }
         
     }

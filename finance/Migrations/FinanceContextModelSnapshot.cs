@@ -60,6 +60,10 @@ namespace finance.Migrations
                     b.Property<Instant>("DatumZeit")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal>("Preis")
                         .HasColumnType("numeric");
 

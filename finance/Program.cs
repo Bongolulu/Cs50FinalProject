@@ -85,10 +85,10 @@ app.MapPost("/quote", async (QuoteRequest quoteRequest, FinanceContext db) =>
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = await abfrager.GetStockQuote(quoteRequest.Symbol);
-    if (aktienkurs == 0)
+    QuoteResult ergebnis = await abfrager.GetStockQuote(quoteRequest.Symbol);
+    if (ergebnis is null)
         return Results.NotFound();
-    return Results.Ok(aktienkurs);
+    return Results.Ok(ergebnis);
 }).RequireAuthorization().Validate<QuoteRequest>();
 
 // Route buy post
@@ -96,12 +96,12 @@ app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpCon
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
-    if (aktienkurs == 0)
+    var ergebnis = await abfrager.GetStockQuote(tradeRequest.Symbol);
+    if (ergebnis is null)
         return Results.NotFound();
     
     // Kaufkosten berechnen:
-    decimal kaufkosten = tradeRequest.Anzahl * aktienkurs;
+    decimal kaufkosten = tradeRequest.Anzahl * ergebnis.price;
     
     // benutzer aus db holen:
     var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
@@ -114,7 +114,7 @@ app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpCon
     decimal neuerKontostand = benutzer.Bargeld - kaufkosten;
     
     // Kauf in DB einfügen:
-    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, tradeRequest.Anzahl, aktienkurs);
+    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, ergebnis.name,tradeRequest.Anzahl, ergebnis.price);
     db.Transaktionen.Add(neueTransaktion);
     
     // DB aktualisieren (Bargeld)
@@ -124,7 +124,7 @@ app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpCon
     await db.SaveChangesAsync();
     
     return Results.Created();
-}).RequireAuthorization().Validate<TradeRequest>();
+}).Validate<TradeRequest>().RequireAuthorization();
 
 // Route sell post
 
@@ -132,12 +132,12 @@ app.MapPost("/sell", async (TradeRequest tradeRequest, FinanceContext db, HttpCo
 {
     // Aktuellen Aktienkurs abfragen:
     AktienKursAbfrager abfrager = new AktienKursAbfrager();
-    decimal aktienkurs = await abfrager.GetStockQuote(tradeRequest.Symbol);
-    if (aktienkurs == 0)
+    var ergebnis = await abfrager.GetStockQuote(tradeRequest.Symbol);
+    if (ergebnis is null)
        return Results.NotFound();
     
     // Verkaufskosten berechnen:
-    decimal verkaufserloes = tradeRequest.Anzahl * aktienkurs;
+    decimal verkaufserloes = tradeRequest.Anzahl * ergebnis.price;
     
     // benutzer aus db holen:
     var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
@@ -156,7 +156,7 @@ app.MapPost("/sell", async (TradeRequest tradeRequest, FinanceContext db, HttpCo
     decimal neuerKontostand = benutzer.Bargeld + verkaufserloes;
     
     // Verkauf in DB einfügen:
-    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, -tradeRequest.Anzahl, aktienkurs);
+    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, ergebnis.name,-tradeRequest.Anzahl, ergebnis.price);
     db.Transaktionen.Add(neueTransaktion);
     
     // DB aktualisieren (Bargeld)
@@ -186,12 +186,13 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
     var benutzer = db.Benutzer.FirstOrDefault(benutzer => benutzer.Name == context.User.Identity.Name);
     var bestand = db.Transaktionen
         .Where(t => t.Benutzer == benutzer)
-        .GroupBy(t => t.Symbol).AsEnumerable()
+        .GroupBy(t => t.Symbol.ToUpper()).AsEnumerable()
         .Select(gruppe => new PortfolioEintrag()
         {
             Symbol = gruppe.Key,
             Anzahl = gruppe.Sum((t => t.Anzahl)),
-            Preis = abfrager.GetStockQuote(gruppe.Key).Result,
+            Preis = abfrager.GetStockQuote(gruppe.Key)?.Result.price??0,
+            Name = gruppe.FirstOrDefault().Name,
         })
         .Where(p => p.Anzahl != 0);
     return new
@@ -199,11 +200,11 @@ app.MapGet("/", async (FinanceContext db, HttpContext context) =>
         Bargeld = benutzer.Bargeld,
         Bestand = bestand,
     };
-    // Gesamtsumme der Aktien:
+    // Gesamtwert = preis * anzahl
+    
+    // Bargeld: benutzer.Bargeld - Gesamtwert jeder aktie
 
-
-    // Bargeld:
-
-    // Gesamtsumme Geld
+    // Gesamtbetrag = Bargeld + Gesamtwert
+    
 });
 app.Run();
