@@ -10,7 +10,13 @@
       type="text"
     />
   </div>
-  <button class="buttonQuote" type="submit">Get quote</button>
+  
+  @if (quoteForm.controls['symbol'].dirty || quoteForm.controls['symbol'].touched) {
+    @if (quoteForm.controls['symbol'].errors?.['required']){
+    <p class="error">Bitte Symbol eingeben.</p>
+    } }
+
+  <button [disabled]="!quoteForm.valid" class="buttonQuote" type="submit">Get quote</button>
 </form>
 
 @if (symbol){

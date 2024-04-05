@@ -1,12 +1,18 @@
 <form [formGroup]="sellForm" (submit)="Sell()">
   <!-- Formular -->
-  <label for="options">Wähle eine Aktie:</label>    <!-- label = dropdown-menue -->
+  <label for="options">Wähle eine Aktie:</label>
+  <!-- label = dropdown-menue -->
   <select formControlName="symbol" class="form-control mx-auto w-auto">
-    <option disabled="" selected="">Symbol</option>
+    <option value="" disabled selected="">Symbol</option>
     @for (symbol of symbole; track $index) {
     <option value="{{ symbol }}">{{ symbol }}</option>
     }
   </select>
+
+  @if (sellForm.controls['symbol'].dirty || sellForm.controls['symbol'].touched)
+  { @if (sellForm.controls['symbol'].errors?.['required']){
+  <p class="error">Bitte Symbol auswählen.</p>
+  } }
 
   <div class="mb-3">
     <input
@@ -18,8 +24,16 @@
       type="number"
     />
   </div>
-  <div class="mb-4">
-    <button class="buttonSell" type="submit">Sell</button>
+
+  @if (sellForm.controls['symbol'].dirty || sellForm.controls['symbol'].touched)
+  { @if (sellForm.controls['symbol'].errors?.['required']){
+  <p class="error">Bitte Symbol eingeben.</p>
+  } }
+
+  <div class="mb-3">
+    <button [disabled]="!sellForm.valid" class="buttonSell" type="submit">
+      Sell
+    </button>
   </div>
 </form>
 <!--Fehlermeldung-->

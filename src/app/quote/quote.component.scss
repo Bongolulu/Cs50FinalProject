@@ -13,13 +13,19 @@
     box-shadow: 0 9px #999;
   }
   
-  .buttonQuote:hover {
+  .buttonQuote:not(:disabled):hover {
     background-color: #c075b5;
   }
   
-  .buttonQuote:active {
+  .buttonQuote:not(:disabled):active {
     background-color: #a12f90;
     box-shadow: 0 4px #5863625b;
     transform: translateY(4px);
   }
+
+  .buttonQuote:disabled {
+    background-color: #c2c2c2;
+    cursor: not-allowed;
+  }
+  
   

@@ -13,12 +13,17 @@
   box-shadow: 0 9px #999;
 }
 
-.buttonSell:hover {
+.buttonSell:not(:disabled):hover {
   background-color: #107180;
 }
 
-.buttonSell:active {
+.buttonSell:not(:disabled):active {
   background-color: #0b515c;
   box-shadow: 0 4px #5863625b;
   transform: translateY(4px);
+}
+
+.buttonSell:disabled {
+  background-color: #c2c2c2;
+  cursor: not-allowed;
 }

@@ -21,7 +21,7 @@ export class QuoteComponent {
     symbol: new FormControl('', [Validators.required], []),
   });
 
-  symbol?: string; //die drei sachen müssen noch angepasst werden.
+  symbol?: string;
   name?: string;
   preis?: number;
   fehler?: string;

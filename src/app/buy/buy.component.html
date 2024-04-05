@@ -1,20 +1,45 @@
-<form [formGroup]="buyForm" (submit)="Buy()"> <!-- Formular -->
-    <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" formControlName="symbol" placeholder="Symbol"
-            type="text">
-    </div>
-    <div class="mb-4">
-        <input autocomplete="off" class="form-control mx-auto w-auto" formControlName="anzahl" placeholder="Anzahl"
-            type="number">
-    </div><!-- button --> 
-    <button class="buttonBuy" type="submit">Buy</button>
+<form [formGroup]="buyForm" (submit)="Buy()">
+  <!-- Formular -->
+  <div class="mb-3">
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      formControlName="symbol"
+      placeholder="Symbol"
+      type="text"
+    />
+  </div>
 
+  @if (buyForm.controls['symbol'].dirty || buyForm.controls['symbol'].touched) {
+  @if (buyForm.controls['symbol'].errors?.['required']){
+  <p class="error">Bitte Symbol eingeben.</p>
+  } }
 
-   <!-- Fehlermeldung -->
-    @if (fehler) {
-    <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">{{ fehler }}</div>
-    }
+  <div class="mb-3">
+    <input
+      autocomplete="off"
+      class="form-control mx-auto w-auto"
+      formControlName="anzahl"
+      placeholder="Anzahl"
+      type="number"
+    />
+  </div>
+
+  @if (buyForm.controls['anzahl'].dirty || buyForm.controls['anzahl'].touched) {
+  @if (buyForm.controls['anzahl'].errors?.['required']){
+  <p class="error">Bitte Anzahl eingeben.</p>
+  } }
+
+  <!-- button -->
+  <button [disabled]="!buyForm.valid" class="buttonBuy" type="submit">
+    Buy
+  </button>
+
+  <!-- Fehlermeldung -->
+  @if (fehler) {
+  <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
+    {{ fehler }}
+  </div>
+  }
 </form>
-
-
-

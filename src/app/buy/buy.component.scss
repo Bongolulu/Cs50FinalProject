@@ -13,12 +13,18 @@
   box-shadow: 0 9px #999;
 }
 
-.buttonBuy:hover {
+.buttonBuy:not(:disabled):hover {
   background-color: #57c15a;
 }
 
-.buttonBuy:active {
+.buttonBuy:not(:disabled):active {
   background-color: #366e38;
   box-shadow: 0 4px #5863625b;
   transform: translateY(4px);
 }
+
+.buttonBuy:disabled {
+  background-color: #c2c2c2;
+  cursor: not-allowed;
+}
+
