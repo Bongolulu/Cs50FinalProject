@@ -2,85 +2,85 @@
 
 #### Video Demo: youtube link
 
-## Überblick
+## Overview
 
-In unserem Unternehmen arbeiten wir mit einer Software, welche sich mit der Verbuchung von Wertpapieren befasst. Da ich in Zukunft in diesem Bereich mitwirken möchte, habe ich mich in meinem Projekt dazu entschieden, das in dem Kurs bearbeitete C$50Finance in unsere bereits verwendeten Technologien zu implementieren.
+In our company, we work with software that deals with the accounting of securities. As I would like to be involved in this area in the future, I decided to implement the C$50Finance I worked on in your course into the technologies we already use.
 
-Ich habe mich also erstmal mit den Technologien und Sprachen befasst, die wir bei uns verwenden. Das sind im Wesentlichen C# im Backend und Typescript im Frontend mit Angular.
+So I started by looking at the technologies and languages that we use. These are essentially C# in the backend and Typescript in the frontend with Angular.
 
-## Vorgehen
+## Procedure
 
-Als erstes habe ich mich mit dem Thema Objektorientierung beschäftigt, insbesondere mit den Programmiersprachen TypeScript und C#.
+First, I learned more about object orientation, in particular with the programming languages TypeScript and C#. I also learned more about HTML and CSS using a website called "The Odin Project" (https://www.theodinproject.com/paths/foundations/courses/foundations).
 
 ### Backend
 
-Danach habe ich mich eingehender mit dem Backend befasst. Über Tutorials habe ich beispielsweise Grundlagen in .NET, C# oder WebAPI erlangt und mich über Google in für mich spezifische Themen eingearbeitet. Als Datenbank habe ich PostgreSQL verwendet.
+After that, I took a closer look at the backend. For example, I learned the basics of .NET, C# and WebAPI via tutorials and familiarized myself with topics specific to me via Google. I used PostgreSQL as my database.
 
-Als "Vermittler" zwischen meinen Klassen und PostgreSQL habe ich Entity Framework verwendet. Ich möchte mit C# mit der Datenbank arbeiten, ohne direkt SQL zu schreiben.
+I used Entity Framework as a "mediator" between my classes and PostgreSQL. I want to work with the database using C# without writing SQL directly.
 
-Im Backend habe ich die verschiedenen GET- und POST- Routen in Anlehnung an das Original-CS50 Finance eingebaut, aber jeweils so, dass nur die Daten als JSON vom Backend versendet werden.
+In the backend, I implemented the various GET and POST routes based on the original C$50 Finance, but in such a way that only the data is sent as JSON from the backend.
 
-Daraufhin habe ich die Routen des Backends alle mit Insomnia als HTTP Client getestet.
+I tested all the backend routes with Insomnia as the HTTP client.
 
-Für die Authentifizierung habe ich im Backend JWT Tokens erzeugt, die bei jedem Login zum Client gesendet werden, und die dann vom Client bei jeder Anfrage mitgesendet werden müssen.
+For authentication, the backend is creating JWT tokens, which are sent to the client with every login and which then have to be sent by the client with every request.
 
-Die Aktienpreise habe ich von einer anderen Webseite bezogen (https://site.financialmodelingprep.com/).
+I obtained the share prices from another website (https://site.financialmodelingprep.com/).
 
 ### Frontend
 
-Für das Frontend nutzen wir Angular als Open- Source- Framework und zur Integration mit dem Backend- Service HTTP-Client-Module. Diese rufen die Daten vom Server ab oder senden sie. Der API- Client (apiservice) vereinfacht die Kommunikation mit der API. Der HTTP- Client sendet z.B. eine GET- oder POST- Anfrage an die API, das heißt die Routen werden vom Server abgerufen. Die Antwort wird verarbeitet und dann entsprechend angezeigt.
+For the frontend, we use Angular as an open source framework using its HTTP client modules for integration with the backend service. This sends and retrieves data from the server. The API client (apiservice) simplifies communication with the API. The HTTP client sends, for example, a GET or POST request to the API, i.e. the routes are retrieved from the server. The response is processed and then displayed accordingly.
 
-Außerdem nutzt Angular eine Router- Bibliothek die es ermöglicht, zwischen verschiedenen Ansichten innerhalb einer Single Page Application (SPA) zu navigieren, ohne die Seite jedesmal neu zu laden (in C$50Finance wurde Server Side Rendering (SSR) genutzt).
+In addition, Angular uses a router library that makes it possible to navigate between different views within a Single Page Application (SPA) without reloading the page each time (Server Side Rendering (SSR) was used in C$50Finance).
 
-Angular verwendet Komponenten, wobei jede Komponente aus einer HTML- Vorlage, CSS- Styles und TypeScript- Code besteht. Diese Kombination definiert eine Funktion in der Anwendung. Die Anwendung wird so in einzelne, wiederverwendbare Teile zerlegt. Dadurch lässt sich der einzelne Teil zum Beispiel einfacher testen, außerdem können Komponenten wiederverwendet werden.
+Angular uses components, where each component consists of an HTML template, CSS styles and TypeScript code. This combination defines a function in the application. The application is thus broken down into individual parts. This makes it easier to test these parts, for example, and components can also be reused.
 
-Als Programmiersprache verwende ich TypeScript um die Benutzeroberfläche zu definieren, HTML um das Verhalten der Anwendung zu implementieren und CSS um das Aussehen der Anwendung für den Enduser zu gestalten.
+As a programming language, Angular is based on TypeScript to define the behaviour of the application, but I also had to apply HTML and CSS to design the appearance of the application for the end user. It is based on the original CS50 design but I had to adapt it to be compatible with the SPA approach and also added CSS styles, e.g. for validation.
 
-Um in Angular die Formular zu verwalten, nutze ich Reactive Forms. Diese werden von der dazugehörenden TypeScript- Klasse gesteuert. Ich habe FormGroup und FormControl verwendet. Des Weiteren habe ich Reactive Forms Validierungsregeln verwendet, z.B. Required, Minlenght und Pattern (damit nur positive Ganzzahlen bei der Stückzahl eingegeben werden können).
-Außerdem habe ich die Farbe der Border bei den Eingabefeldern je nach valid oder invalid Eingabe angepasst. Dementsprechend habe ich bei einer invalid Eingabe eine Fehlermeldung ausgeben lassen. Die Submit- Buttons sind so lange gesperrt, bis das jeweilige Formular korrekt eingegeben wurde, also gültig ist.
+To manage the forms in Angular, I use Reactive Forms. These are controlled by the corresponding TypeScript class. I used FormGroup and FormControl. Reactive Forms also allow the configuration of validation rules, e.g. Required, Minlenght and Pattern (so that only positive integers can be entered in the quantity).
+I have also changed the color of the borders of the input fields depending on whether the input is valid or invalid. Accordingly, I have displayed an error message for an invalid entry. The submit buttons are blocked until the respective form has been entered correctly, i.e. is valid.
 
-### Neue Funktionen
+### New functions
 
-Folgende neue Funktionen habe ich eingebaut:
+I have added the following new functions:
 
-- Zeigen der tatsächlichen Aktien-Namen
-- Kaufen und Verkaufen ist auch direkt aus der Depotübersicht möglich
-- Keine Nutzung von Apology-Seiten sondern Einblenden von Fehlern vom Backend in eigenen Boxen
-- Einblenden von "Loading"-Meldungen während des Wartens auf die Backend-Antworten
+- Show the actual share names.
+- Buying and selling is also possible directly from the portfolio overview.
+- No use of apology pages but display of errors from the backend in special boxes directly on the current page.
+- Display of "Loading" messages while waiting for the backend responses.
 
-## Detailbeschreibung Backend
+## Detailed description Backend
 
-| File                                         | Description                                                                                |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| File                                         | Description                                                                                 |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------- |
 | FinanceContext.cs                            | This defines the mapping between my 2 classes and the database tables. I am using 2 tables. |
 | AktienKursAbfrager.cs                        | This fetches stock names and prices from the external website.                              |
-| CustomRouteHandlerBuilder.cs                 | This is a module I found on Google so that I can use validation attributes for MinimalAPI  |
-| DataValidator.cs                             | see above.                                                                                 |
+| CustomRouteHandlerBuilder.cs                 | This is a module I found on Google so that I can use validation attributes for MinimalAPI.  |
+| DataValidator.cs                             | See above.                                                                                  |
 | _Jwt_                                        | Code proposed by Google and AI to cover the generation and signing of JWT tokens.           |
 | MatchPropertyAttribute                       | Custom attribute to support regular expressions (proposed by AI).                           |
 | Folder migrations                            | This is automatically generated by EF.                                                      |
 | Benutzer.cs                                  | My model class to describe what a user is.                                                  |
 | Transaktion.cs                               | Same approach for the transactions of stocks.                                               |
-| \*Request.cs                                 | Classes to describe the format of incoming request to the API.                             |
+| \*Request.cs                                 | Classes to describe the format of incoming request to the API.                              |
 | *Response.cs, *Result.cs PortfolioEintrag.cs | Classes to describe the format of outgoing responses from the API.                          |
 | Program.cs                                   | Main class that starts the webserver and registers all routes that the API will respond to. |
 | docker-compose.yml                           | Proposed by AI, this sets up a docker container to run PostgreSQL.                          |
 
-## Detailbeschreibung Frontend
+## Detailed description Frontend
 
 The client was generated with Angular CLI as template. I will now describe all files, that I added or modified significantly.
 
-| File                | Description                                                                                                                                                                                                                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| File                | Description                                                                                                                                                                                                                                                          |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | styles.scss         | For some global styles to indicated valid/invalid form fields.                                                                                                                                                                                                       |
-| api.service.ts      | This has all the HTTP GET and POST requests to the routes from the backend. It also remembers if the user is logged in and stores/receives the JWT token to/from the Browser LocalStorage.                                                                        |
+| api.service.ts      | This has all the HTTP GET and POST requests to the routes from the backend. It also remembers if the user is logged in and stores/receives the JWT token to/from the Browser LocalStorage.                                                                           |
 | app.routes.ts       | This defines all routes that the user can navigate to and which component should be used for it. E.g. when the user goes to the /sell route, the SellComponent will be shown.                                                                                        |
 | Register Component  | Renders a form to create a new user. Does all the validation and then submits the request. It reroutes to login on success.                                                                                                                                          |
-| Login Component     | Equivalent to register, reroutes to. portfolio                                                                                                                                                                                                                       |
+| Login Component     | Equivalent to register, reroutes to portfolio.                                                                                                                                                                                                                       |
 | Quote component     | Lets the user enter a symbol and submit a quote request. Will display an error if there is an error server response, otherwise will display the price and is ready for the next request.                                                                             |
 | Buy Component       | This includes the buy form where the user can input a symbol and quantity, it validates the inputs before the user can submit the buy request. It reroutes to the portfolio page in case of success or shows an error message, if the server responds with an error. |
 | Sell Component      | It fetches the symbols of the stocks in the users posession upon load and populates the select input with it. Then it works equivalent to the buy component.                                                                                                         |
-| History Component   | On load, it fetches all transactions from the API and display them as table.                                                                                                                                                                                         |
+| History Component   | On load, it fetches all transactions from the API and displays them as table.                                                                                                                                                                                        |
 | Portfolio Component | On load, it fetches all open positions aggregated from the transactions and the amount of cash from the server, calculates the total values and displays the data in a table. It also allows to directly buy more or sell the stocks for each line of the table.     |
-| Header Component    | It displays the navbar and it checks if the user is logged in or not to render only the relevant links.                                                                                                                                                               |
+| Header Component    | It displays the navbar and it checks if the user is logged in or not to render only the relevant links.                                                                                                                                                              |
 | Footer Component    | It just displays a static information about the data source of the stock prices.                                                                                                                                                                                     |
