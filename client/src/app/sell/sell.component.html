@@ -18,16 +18,17 @@
     <input
       autocomplete="off"
       class="form-control mx-auto w-auto"
-      min="1"
       formControlName="anzahl"
       placeholder="Anzahl"
       type="number"
     />
   </div>
 
-  @if (sellForm.controls['symbol'].dirty || sellForm.controls['symbol'].touched)
-  { @if (sellForm.controls['symbol'].errors?.['required']){
-  <p class="error">Bitte Symbol eingeben.</p>
+  @if (sellForm.controls['anzahl'].dirty || sellForm.controls['anzahl'].touched)
+  { @if (sellForm.controls['anzahl'].errors?.['required']){
+  <p class="error">Bitte Anzahl eingeben.</p>
+  } @if (sellForm.controls['anzahl'].errors?.['pattern']){
+  <p class="error">Bitte positive Anzahl eingeben.</p>
   } }
 
   <div class="mb-3">

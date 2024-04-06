@@ -1,6 +1,6 @@
-# New-Finance
+# New Finance
 
-#### Video Demo: youtube link
+#### Video Demo: [youtube link](https://youtu.be/LVS-Z2Ps2ic)
 
 ## Overview
 

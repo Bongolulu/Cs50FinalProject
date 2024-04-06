@@ -114,7 +114,7 @@ app.MapPost("/buy", async (TradeRequest tradeRequest, FinanceContext db, HttpCon
     decimal neuerKontostand = benutzer.Bargeld - kaufkosten;
     
     // Kauf in DB einfügen:
-    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol, ergebnis.name,tradeRequest.Anzahl, ergebnis.price);
+    Transaktion neueTransaktion = new Transaktion(benutzer, tradeRequest.Symbol.ToUpper(), ergebnis.name,tradeRequest.Anzahl, ergebnis.price);
     db.Transaktionen.Add(neueTransaktion);
     
     // DB aktualisieren (Bargeld)

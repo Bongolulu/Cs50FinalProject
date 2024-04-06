@@ -7,13 +7,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { UsdCurrencyPipe } from "../helpers/usd-currency.pipe";
 
 @Component({
-  selector: 'app-quote',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './quote.component.html',
-  styleUrl: './quote.component.scss',
+    selector: 'app-quote',
+    standalone: true,
+    templateUrl: './quote.component.html',
+    styleUrl: './quote.component.scss',
+    imports: [ReactiveFormsModule, UsdCurrencyPipe]
 })
 export class QuoteComponent {
   // Eigenschaften
@@ -23,7 +24,7 @@ export class QuoteComponent {
 
   symbol?: string;
   name?: string;
-  preis?: number;
+  preis: number = 0;
   fehler?: string;
 
   // Konstruktor

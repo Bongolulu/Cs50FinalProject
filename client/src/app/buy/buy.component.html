@@ -29,6 +29,8 @@
   @if (buyForm.controls['anzahl'].dirty || buyForm.controls['anzahl'].touched) {
   @if (buyForm.controls['anzahl'].errors?.['required']){
   <p class="error">Bitte Anzahl eingeben.</p>
+  } @if (buyForm.controls['anzahl'].errors?.['pattern']){
+  <p class="error">Bitte positive Anzahl eingeben.</p>
   } }
 
   <!-- button -->

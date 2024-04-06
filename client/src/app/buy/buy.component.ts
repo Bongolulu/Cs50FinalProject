@@ -22,7 +22,7 @@ export class BuyComponent {
     symbol: new FormControl('', [Validators.required], []), //Formularfeld
     anzahl: new FormControl(
       '',
-      [Validators.required, Validators.pattern('^[0-9]*$')],
+      [Validators.required, Validators.pattern('^[1-9][0-9]*$')],
       []
     ), //Formularfeld
   });

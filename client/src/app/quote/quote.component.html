@@ -21,7 +21,7 @@
 
 @if (symbol){
 <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">
-  {{ symbol }} {{ name }}: {{ preis }}
+  {{ symbol }} {{ name }}: {{ preis | usdCurrency }}
 </div>
 } @if (fehler){
 <div class="shadow-sm p-3 mb-5 mt-10 bg-body-tertiary rounded">

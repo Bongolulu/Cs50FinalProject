@@ -9,7 +9,7 @@ public class Transaktion
    
     public Guid TransaktionId { get; set; }
     public Benutzer Benutzer { get; set; }
-    public string Symbol { get; set; }
+    public string Symbol { get;set; }
     public string Name { get; set; }
     public int Anzahl { get; set; }
     public decimal Preis { get; set; }
