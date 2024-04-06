@@ -14,8 +14,8 @@ import { UsdCurrencyPipe } from '../helpers/usd-currency.pipe';
 export class PortfolioComponent implements OnInit {
   portfolio: any = [];
   // TODO später any durch richtige typen ersetzen um fehler zu vermeiden
-  bargeld: number = 223.32;
-  gesamtbetrag: number = 4002.11;
+  bargeld: number = 0;
+  gesamtbetrag: number = 0;
 
   testwert: any;
 
